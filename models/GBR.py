@@ -10,7 +10,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 class ProjectGBRegressor(Model):
     def __init__(
             self, X_train, X_test, X_val, y_train, y_test, y_val,
-            learning_rates = [0.01, 0.1, 1, 10], max_depths = list(range(10, 50, 5)), n_estimators = list(range(10, 100, 10)), sub_samples = np.arange(0.5, 0.75, 0.25),
+            learning_rates = [0.01, 0.1, 1, 10], max_depths = list(range(10, 30, 5)), n_estimators = list(range(10, 50, 10)), sub_samples = np.arange(0.5, 0.75, 0.25),
             combine_train_and_val = True
         ):
 
@@ -41,7 +41,7 @@ class ProjectGBRegressor(Model):
         tree = GradientBoostingRegressor(random_state=42)
 
         # GridSearchCV object Instanciation
-        grid_tree = RandomizedSearchCV(tree, param_grid, cv=5, scoring='neg_mean_squared_error')
+        grid_tree = RandomizedSearchCV(tree, param_grid, cv=5, n_iter=5, scoring='neg_mean_squared_error')
 
         # GridSearchCV object Training
         grid_tree.fit(self.X_train, self.y_train)
